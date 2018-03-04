@@ -28,6 +28,7 @@
             <a class="brand-logo" href="{{ url('/') }}">
                 <img src="{{ URL::asset('images/logo.png')}}">
             </a>
+            <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
             <!-- Right Side Of Navbar -->
             <ul class="right hide-on-med-and-down">
                 <!-- Authentication Links -->
@@ -42,6 +43,24 @@
                     @endif
                     <li>
                         <a class="dropdown-button" href="#" data-activates="dropdown1">
+                            {{ Auth::user()->name }} <i class="material-icons right">arrow_drop_down</i>
+                        </a>
+                    </li>
+                @endguest
+            </ul>
+            <ul class="side-nav" id="mobile-demo">
+                <!-- Authentication Links -->
+                @guest
+                    <li><a href="{{ route('login') }}">Login</a></li>
+                    <li><a href="{{ route('register') }}">Register</a></li>
+                @else
+                    @if(Auth::user()->isAdmin())
+                        <li>
+                            <a href="{{ url('admin') }}">Admin</a>
+                        </li>
+                    @endif
+                    <li>
+                        <a class="dropdown-button" href="#" data-activates="dropdown2">
                             {{ Auth::user()->name }} <i class="material-icons right">arrow_drop_down</i>
                         </a>
                     </li>
@@ -72,6 +91,25 @@
         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
             @csrf
         </form>
+    </ul>
+
+    <ul class="dropdown-content" id="dropdown2">
+        <li>
+            <a href="{{ url('feed') }}">myFeed</a>
+        </li>
+        <li>
+            <?php
+                $monthNow = date('m');
+                $yearNow = date('Y');
+            ?>
+            <a href='{{url("summary/$monthNow/$yearNow")}}'>Summary</a>
+        </li>
+        <li><a href="{{ route('logout') }}"
+           onclick="event.preventDefault();
+                         document.getElementById('logout-form').submit();">
+            Logout
+        </a>
+        </li>
     </ul>
 
     <main>
